@@ -18,7 +18,7 @@ spring:
   # 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/my_db
+    url: jdbc:mysql://127.0.0.1:3306/online_judge
     username: root
     password: 5626%%..
   # Redis 配置
