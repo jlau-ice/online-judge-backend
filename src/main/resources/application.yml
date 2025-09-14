@@ -24,6 +24,9 @@ server:
     session:
       cookie:
         max-age: 2592000
+        same-site: None
+        secure: true
+        http-only: true
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
