@@ -10,8 +10,11 @@ import com.carbon.model.entity.PostThumb;
 import com.carbon.model.entity.User;
 import com.carbon.service.PostService;
 import com.carbon.service.PostThumbService;
+
 import javax.annotation.Resource;
+
 import org.springframework.aop.framework.AopContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostThumbServiceImpl extends ServiceImpl<PostThumbMapper, PostThumb>
         implements PostThumbService {
 
-    @Resource
-    private PostService postService;
+
+    private final PostService postService;
+
+    @Autowired
+    public PostThumbServiceImpl(PostService postService) {
+        this.postService = postService;
+    }
 
     /**
      * 点赞

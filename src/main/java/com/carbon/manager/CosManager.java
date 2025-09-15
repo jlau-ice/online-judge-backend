@@ -6,6 +6,8 @@ import com.qcloud.cos.model.PutObjectResult;
 import com.carbon.config.CosClientConfig;
 import java.io.File;
 import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,11 +17,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class CosManager {
 
-    @Resource
-    private CosClientConfig cosClientConfig;
+    private final CosClientConfig cosClientConfig;
 
-    @Resource
-    private COSClient cosClient;
+    private final COSClient cosClient;
+
+    @Autowired
+    public CosManager(CosClientConfig cosClientConfig, COSClient cosClient) {
+        this.cosClientConfig = cosClientConfig;
+        this.cosClient = cosClient;
+    }
 
     /**
      * 上传对象

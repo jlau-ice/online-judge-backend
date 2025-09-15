@@ -10,6 +10,7 @@ import com.carbon.common.ResultUtils;
 import com.carbon.constant.UserConstant;
 import com.carbon.exception.BusinessException;
 import com.carbon.exception.ThrowUtils;
+import com.carbon.manager.CosManager;
 import com.carbon.model.dto.post.PostAddRequest;
 import com.carbon.model.dto.post.PostEditRequest;
 import com.carbon.model.dto.post.PostQueryRequest;
@@ -24,6 +25,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,11 +41,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class PostController {
 
-    @Resource
-    private PostService postService;
+    private final PostService postService;
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
+
+    @Autowired
+    public PostController(PostService postService, UserService userService, CosManager cosManager) {
+        this.postService = postService;
+        this.userService = userService;
+    }
 
     // region 增删改查
 

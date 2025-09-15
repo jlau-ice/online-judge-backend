@@ -21,6 +21,7 @@ import com.carbon.model.vo.UserVO;
 import com.carbon.service.PostService;
 import com.carbon.service.UserService;
 import com.carbon.utils.SqlUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import lombok.extern.slf4j.Slf4j;
 import cn.hutool.core.collection.CollUtil;
 import org.apache.commons.lang3.ObjectUtils;
@@ -38,6 +40,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -53,17 +56,25 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource
-    private PostThumbMapper postThumbMapper;
+    private final PostThumbMapper postThumbMapper;
 
-    @Resource
-    private PostFavourMapper postFavourMapper;
+    private final PostFavourMapper postFavourMapper;
 
-    @Resource
-    private ElasticsearchRestTemplate elasticsearchRestTemplate;
+    private final ElasticsearchRestTemplate elasticsearchRestTemplate;
+
+    @Autowired
+    public PostServiceImpl(UserService userService,
+                           PostThumbMapper postThumbMapper,
+                           PostFavourMapper postFavourMapper,
+                           ElasticsearchRestTemplate elasticsearchRestTemplate) {
+        this.userService = userService;
+        this.postThumbMapper = postThumbMapper;
+        this.postFavourMapper = postFavourMapper;
+        this.elasticsearchRestTemplate = elasticsearchRestTemplate;
+    }
+
 
     @Override
     public void validPost(Post post, boolean add) {

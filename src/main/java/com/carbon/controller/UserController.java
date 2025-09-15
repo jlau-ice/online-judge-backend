@@ -32,6 +32,7 @@ import me.chanjar.weixin.common.bean.oauth2.WxOAuth2AccessToken;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,11 +52,16 @@ import static com.carbon.service.impl.UserServiceImpl.SALT;
 @Slf4j
 public class UserController {
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource
-    private WxOpenConfig wxOpenConfig;
+    private final WxOpenConfig wxOpenConfig;
+
+    @Autowired
+    public UserController(UserService userService, WxOpenConfig wxOpenConfig) {
+        this.userService = userService;
+        this.wxOpenConfig = wxOpenConfig;
+    }
+
 
     // region 登录相关
 

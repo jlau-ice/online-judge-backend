@@ -6,6 +6,7 @@ import com.carbon.common.ErrorCode;
 import com.carbon.common.ResultUtils;
 import com.carbon.exception.BusinessException;
 import com.carbon.exception.ThrowUtils;
+import com.carbon.mapper.PostFavourMapper;
 import com.carbon.model.dto.post.PostQueryRequest;
 import com.carbon.model.dto.postfavour.PostFavourAddRequest;
 import com.carbon.model.dto.postfavour.PostFavourQueryRequest;
@@ -15,9 +16,12 @@ import com.carbon.model.vo.PostVO;
 import com.carbon.service.PostFavourService;
 import com.carbon.service.PostService;
 import com.carbon.service.UserService;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,21 +29,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 帖子收藏接口
- *
  */
 @RestController
 @RequestMapping("/post_favour")
 @Slf4j
 public class PostFavourController {
 
-    @Resource
-    private PostFavourService postFavourService;
+    private final PostFavourService postFavourService;
+    private final PostService postService;
+    private final UserService userService;
 
-    @Resource
-    private PostService postService;
-
-    @Resource
-    private UserService userService;
+    @Autowired
+    public PostFavourController(PostFavourService postFavourService,
+                                PostService postService,
+                                UserService userService) {
+        this.postFavourService = postFavourService;
+        this.postService = postService;
+        this.userService = userService;
+    }
 
     /**
      * 收藏 / 取消收藏
@@ -50,7 +57,7 @@ public class PostFavourController {
      */
     @PostMapping("/")
     public BaseResponse<Integer> doPostFavour(@RequestBody PostFavourAddRequest postFavourAddRequest,
-            HttpServletRequest request) {
+                                              HttpServletRequest request) {
         if (postFavourAddRequest == null || postFavourAddRequest.getPostId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -69,7 +76,7 @@ public class PostFavourController {
      */
     @PostMapping("/my/list/page")
     public BaseResponse<Page<PostVO>> listMyFavourPostByPage(@RequestBody PostQueryRequest postQueryRequest,
-            HttpServletRequest request) {
+                                                             HttpServletRequest request) {
         if (postQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -91,7 +98,7 @@ public class PostFavourController {
      */
     @PostMapping("/list/page")
     public BaseResponse<Page<PostVO>> listFavourPostByPage(@RequestBody PostFavourQueryRequest postFavourQueryRequest,
-            HttpServletRequest request) {
+                                                           HttpServletRequest request) {
         if (postFavourQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }

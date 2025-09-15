@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -31,11 +32,15 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class FileController {
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource
-    private CosManager cosManager;
+    private final CosManager cosManager;
+
+    @Autowired
+    public FileController(UserService userService, CosManager cosManager) {
+        this.userService = userService;
+        this.cosManager = cosManager;
+    }
 
     /**
      * 文件上传

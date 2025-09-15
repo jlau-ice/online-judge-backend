@@ -15,6 +15,7 @@ import com.carbon.service.PostFavourService;
 import com.carbon.service.PostService;
 import javax.annotation.Resource;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFavour>
         implements PostFavourService {
 
-    @Resource
-    private PostService postService;
+    private final PostService postService;
+
+    @Autowired
+    public PostFavourServiceImpl(PostService postService) {
+        this.postService = postService;
+    }
 
     /**
      * 帖子收藏

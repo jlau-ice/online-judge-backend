@@ -11,6 +11,7 @@ import com.carbon.service.UserService;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +26,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class PostThumbController {
 
-    @Resource
-    private PostThumbService postThumbService;
+    private final PostThumbService postThumbService;
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
+
+    @Autowired
+    public PostThumbController(PostThumbService postThumbService, UserService userService) {
+        this.postThumbService = postThumbService;
+        this.userService = userService;
+    }
 
     /**
      * 点赞 / 取消点赞
