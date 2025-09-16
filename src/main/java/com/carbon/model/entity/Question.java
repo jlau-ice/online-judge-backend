@@ -1,11 +1,12 @@
 package com.carbon.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import com.carbon.model.dto.question.JudgeConfig;
 import lombok.Data;
 
 /**
@@ -13,7 +14,11 @@ import lombok.Data;
  */
 @TableName(value = "question")
 @Data
-public class Question {
+public class Question implements Serializable {
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
+
     /**
      * id
      */
@@ -38,7 +43,7 @@ public class Question {
     /**
      * 标签列表（json 数组）
      */
-    private Object tags;
+    private String tags;
 
     /**
      * 题目答案
@@ -63,7 +68,7 @@ public class Question {
     /**
      * 判题配置（json 对象）
      */
-    private Object judgeConfig;
+    private String judgeConfig;
 
     /**
      * 点赞数
@@ -108,5 +113,6 @@ public class Question {
     /**
      * 是否删除
      */
+    @TableLogic
     private Integer isDelete;
 }

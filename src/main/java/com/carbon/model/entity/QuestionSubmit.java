@@ -1,17 +1,22 @@
 package com.carbon.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
+import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
  * 题目提交
  */
-@TableName(value ="question_submit")
+@TableName(value = "question_submit")
 @Data
-public class QuestionSubmit {
+public class QuestionSubmit implements Serializable {
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
+
     /**
      * id
      */
@@ -41,10 +46,10 @@ public class QuestionSubmit {
     /**
      * 判题信息（json 对象）执行时间等等
      */
-    private Object judgeInfo;
+    private String judgeInfo;
 
     /**
-     * 判题结果枚举值 
+     * 判题结果枚举值
      */
     private String judgmentResults;
 
@@ -81,5 +86,6 @@ public class QuestionSubmit {
     /**
      * 是否删除
      */
+    @TableLogic
     private Integer isDelete;
 }
