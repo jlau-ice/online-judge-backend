@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public enum QuestionSubmitStatusEnum {
 
-    WATING("等待中", 0),
+    WAITING("等待中", 0),
     RUNNING("判题中", 1),
     SUCCESS("成功", 2),
     FAILED("失败",3);

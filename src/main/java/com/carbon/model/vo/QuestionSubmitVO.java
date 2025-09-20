@@ -67,14 +67,15 @@ public class QuestionSubmitVO implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
     public static QuestionSubmit voToObj(QuestionSubmitVO questionSubmitVO) {
         if (questionSubmitVO == null) {
             return null;
         }
-        QuestionSubmit questionSubmit=new QuestionSubmit();
+        QuestionSubmit questionSubmit = new QuestionSubmit();
         BeanUtils.copyProperties(questionSubmitVO, questionSubmit);
         JudgeInfo judgeInfoObj = questionSubmitVO.getJudgeInfo();
-        if(judgeInfoObj!=null){
+        if (judgeInfoObj != null) {
             questionSubmit.setJudgeInfo(JSONUtil.toJsonStr(judgeInfoObj));
         }
         return questionSubmit;
@@ -92,8 +93,8 @@ public class QuestionSubmitVO implements Serializable {
         }
         QuestionSubmitVO questionSubmitVO = new QuestionSubmitVO();
         BeanUtils.copyProperties(questionSubmit, questionSubmitVO);
-        String judgeInfoStr=questionSubmit.getJudgeInfo();
-        questionSubmitVO.setJudgeInfo(JSONUtil.toBean(judgeInfoStr,JudgeInfo.class));
+        String judgeInfoStr = questionSubmit.getJudgeInfo();
+        questionSubmitVO.setJudgeInfo(JSONUtil.toBean(judgeInfoStr, JudgeInfo.class));
         return questionSubmitVO;
     }
 }

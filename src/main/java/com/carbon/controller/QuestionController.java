@@ -10,14 +10,9 @@ import com.carbon.common.ResultUtils;
 import com.carbon.constant.UserConstant;
 import com.carbon.exception.BusinessException;
 import com.carbon.exception.ThrowUtils;
-import com.carbon.model.dto.post.PostAddRequest;
-import com.carbon.model.dto.post.PostEditRequest;
-import com.carbon.model.dto.post.PostQueryRequest;
-import com.carbon.model.dto.post.PostUpdateRequest;
 import com.carbon.model.dto.question.*;
 import com.carbon.model.entity.Question;
 import com.carbon.model.entity.User;
-import com.carbon.model.vo.PostVO;
 import com.carbon.model.vo.QuestionVO;
 import com.carbon.service.QuestionService;
 import com.carbon.service.UserService;
@@ -40,7 +35,7 @@ public class QuestionController {
     private final Gson gson;
 
     @Autowired
-    public QuestionController(QuestionService questionService, UserService userService,Gson gson) {
+    public QuestionController(QuestionService questionService, UserService userService, Gson gson) {
         this.questionService = questionService;
         this.userService = userService;
         this.gson = gson;
@@ -66,11 +61,11 @@ public class QuestionController {
             question.setTags(JSONUtil.toJsonStr(tags));
         }
         List<JudgeCase> judgeCase = questionAddRequest.getJudgeCase();
-        if(judgeCase!=null){
+        if (judgeCase != null) {
             question.setJudgeCase(gson.toJson(judgeCase));
         }
         JudgeConfig judgeConfig = questionAddRequest.getJudgeConfig();
-        if(judgeConfig!=null){
+        if (judgeConfig != null) {
             question.setJudgeConfig(gson.toJson(judgeConfig));
         }
         questionService.validQuestion(question, true);
@@ -124,15 +119,15 @@ public class QuestionController {
         Question question = new Question();
         BeanUtils.copyProperties(questionUpdateRequest, question);
         List<String> tags = questionUpdateRequest.getTags();
-        if (tags != null) {
+        if (tags != null && !tags.isEmpty()) {
             question.setTags(JSONUtil.toJsonStr(tags));
         }
         List<JudgeCase> judgeCase = questionUpdateRequest.getJudgeCase();
-        if(judgeCase!=null){
+        if (judgeCase != null) {
             question.setJudgeCase(gson.toJson(judgeCase));
         }
         JudgeConfig judgeConfig = questionUpdateRequest.getJudgeConfig();
-        if(judgeConfig!=null){
+        if (judgeConfig != null) {
             question.setJudgeConfig(gson.toJson(judgeConfig));
         }
         // 参数校验
@@ -171,7 +166,7 @@ public class QuestionController {
      */
     @PostMapping("/list/page")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Page<Question>> listQuestionByPage(@RequestBody QuestionQueryRequest questionQueryRequest,HttpServletRequest request) {
+    public BaseResponse<Page<Question>> listQuestionByPage(@RequestBody QuestionQueryRequest questionQueryRequest, HttpServletRequest request) {
         long current = questionQueryRequest.getCurrent();
         long size = questionQueryRequest.getPageSize();
         Page<Question> questionPage = questionService.page(new Page<>(current, size),
@@ -217,6 +212,7 @@ public class QuestionController {
         long size = questionQueryRequest.getPageSize();
         // 限制爬虫
         ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
+        // todo
         Page<Question> questionPage = questionService.page(new Page<>(current, size),
                 questionService.getQueryWrapper(questionQueryRequest));
         return ResultUtils.success(questionService.getQuestionVOPage(questionPage, request));
@@ -243,11 +239,11 @@ public class QuestionController {
             question.setTags(JSONUtil.toJsonStr(tags));
         }
         List<JudgeCase> judgeCase = questionEditRequest.getJudgeCase();
-        if(judgeCase!=null){
+        if (judgeCase != null) {
             question.setJudgeCase(gson.toJson(judgeCase));
         }
         JudgeConfig judgeConfig = questionEditRequest.getJudgeConfig();
-        if(judgeConfig!=null){
+        if (judgeConfig != null) {
             question.setJudgeConfig(gson.toJson(judgeConfig));
         }
         // 参数校验

@@ -2,10 +2,7 @@ package com.carbon.model.vo;
 
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.carbon.model.dto.question.JudgeCase;
 import com.carbon.model.dto.question.JudgeConfig;
 import com.carbon.model.entity.Question;
 import lombok.Data;
@@ -61,10 +58,6 @@ public class QuestionVO implements Serializable {
      */
     private Integer acceptedNum;
 
-    /**
-     * 判题用例（json 数组）
-     */
-    private List<JudgeCase> judgeCase;
 
     /**
      * 判题配置（json 对象）
@@ -112,10 +105,9 @@ public class QuestionVO implements Serializable {
     private Date updateTime;
 
     /**
-     * 是否删除
+     * userVO
      */
-    @TableLogic
-    private Integer isDelete;
+    private UserVO userVO;
 
     /**
      * 包装类转对象

@@ -52,7 +52,7 @@ public enum QuestionSubmitLanguageEnum {
         return value;
     }
 
-    public String getText() {
+    public String getText()  {
         return text;
     }
 }

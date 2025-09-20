@@ -1,13 +1,10 @@
 package com.carbon.model.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
-import com.carbon.model.dto.question.JudgeConfig;
-import lombok.Data;
 
 /**
  * 题目
@@ -22,7 +19,7 @@ public class Question implements Serializable {
     /**
      * id
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
@@ -63,7 +60,7 @@ public class Question implements Serializable {
     /**
      * 判题用例（json 数组）
      */
-    private Object judgeCase;
+    private String judgeCase;
 
     /**
      * 判题配置（json 对象）

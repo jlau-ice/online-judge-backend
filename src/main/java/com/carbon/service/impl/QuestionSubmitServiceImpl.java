@@ -22,11 +22,13 @@ import com.carbon.service.UserService;
 import com.carbon.utils.SqlUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -36,11 +38,15 @@ import java.util.stream.Collectors;
 public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper, QuestionSubmit>
         implements QuestionSubmitService {
 
-    @Resource
-    private QuestionService questionService;
+    private final QuestionService questionService;
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
+
+    @Autowired
+    public QuestionSubmitServiceImpl(QuestionService questionService, UserService userService) {
+        this.questionService = questionService;
+        this.userService = userService;
+    }
 
 
     /**
@@ -55,7 +61,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         String language = questionSubmitAddRequest.getLanguage();
         QuestionSubmitLanguageEnum languageEnum = QuestionSubmitLanguageEnum.getEnumByValue(language);
         if (languageEnum == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "编程语言错误");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "不支持的编程语言: " + language);
         }
         long questionId = questionSubmitAddRequest.getQuestionId();
         // 判断实体是否存在，根据类别获取实体
@@ -72,11 +78,11 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         questionSubmit.setQuestionId(questionId);
         questionSubmit.setCode(questionSubmitAddRequest.getCode());
         questionSubmit.setLanguage(language);
-        questionSubmit.setStatus(QuestionSubmitStatusEnum.WATING.getValue());
+        questionSubmit.setStatus(QuestionSubmitStatusEnum.WAITING.getValue());
         questionSubmit.setJudgeInfo("{}");
         boolean save = this.save(questionSubmit);
         if (!save) {
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "数据输入失败");
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "题目提交失败");
         }
         return questionSubmit.getId();
     }
@@ -102,10 +108,10 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
 
         // 拼接查询条件
         queryWrapper.eq(StringUtils.isNotBlank(language), "language", language);
-        queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
-        queryWrapper.eq(ObjectUtils.isNotEmpty(questionId), "questionId", questionId);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "user_id", userId);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(questionId), "question_id", questionId);
         queryWrapper.eq(QuestionSubmitStatusEnum.getEnumByValue(status) != null, "status", status);
-        queryWrapper.eq("isDelete", false);
+        queryWrapper.eq("is_delete", false);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         return queryWrapper;
